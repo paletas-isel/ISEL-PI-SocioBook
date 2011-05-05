@@ -40,6 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
+=======
+    <Compile Include="Share.cs" />
+>>>>>>> 897807e209c08b06df84c86de9829f5f969ca9e1
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Share.cs" />
   </ItemGroup>

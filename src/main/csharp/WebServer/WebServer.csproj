@@ -66,19 +66,42 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Handlers\MainHandler.ashx.cs">
-      <DependentUpon>MainHandler.ashx</DependentUpon>
+    <Compile Include="Handlers\Shares\AddShare.ashx.cs">
+      <DependentUpon>AddShare.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\Shares\GetShare.ashx.cs">
+      <DependentUpon>GetShare.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\Shares\RemoveShare.ashx.cs">
+      <DependentUpon>RemoveShare.ashx</DependentUpon>
     </Compile>
     <Compile Include="Handlers\SharesHandler.ashx.cs">
       <DependentUpon>SharesHandler.ashx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+<<<<<<< HEAD
   <ItemGroup>
     <Content Include="Handlers\SharesHandler.ashx" />
   </ItemGroup>
+=======
+>>>>>>> 897807e209c08b06df84c86de9829f5f969ca9e1
   <ItemGroup>
-    <Content Include="Handlers\MainHandler.ashx" />
+    <Content Include="Handlers\Shares\AddShare.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Handlers\Shares\RemoveShare.ashx" />
+    <Content Include="Handlers\Shares\GetShare.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mappers\Mappers.csproj">
+      <Project>{BAFEF3C4-562E-4FD6-A50D-FD63918F2AEF}</Project>
+      <Name>Mappers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{B134FDC1-A2CB-4AD5-A106-DB236EFF5201}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mappers\Mappers.csproj">
