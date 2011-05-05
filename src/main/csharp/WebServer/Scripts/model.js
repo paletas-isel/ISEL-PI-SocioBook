@@ -52,12 +52,12 @@ function Model()
 	{
 		var shares = [];
 		
-		this.AddShare = function(share) {
+		this.AddShare = function(share, callback) {
 			shares.push(share);	
 			return share;
 		}
 
-		this.RemoveShare = function(share) {
+        this.RemoveShare = function (share, callback) {
 			shares.forEach(function(oShare, shareIdx)
 							{
 								if(share.Equals(oShare))
