@@ -4,16 +4,18 @@ namespace Model
 {
     public abstract class Share
     {
-        private readonly DateTime _date;
+        private static long _masterStamp = 0;
+
+        private readonly long _stamp;
         private readonly string _user;
 
-        protected Share(string user, DateTime date)
+        protected Share(string user)
         {
             _user = user;
-            _date = date;
+            _stamp = _masterStamp++;
         }
 
-        public DateTime Date { get { return _date; } }
+        public long Stamp { get { return _stamp; } }
 
         public string User { get { return _user; } }
     }
@@ -22,7 +24,7 @@ namespace Model
     {
         private readonly string _text;
 
-        public TextShare(string user, string text) : base(user, DateTime.Now)
+        public TextShare(string user, string text) : base(user)
         {
             _text = text;
         }
@@ -34,7 +36,7 @@ namespace Model
     {
         private readonly Uri _anchor;
 
-        public AnchorShare(string user, Uri anchor) : base(user, DateTime.Now)
+        public AnchorShare(string user, Uri anchor) : base(user)
         {
             _anchor = anchor;
         }

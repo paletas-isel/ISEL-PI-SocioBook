@@ -24,9 +24,9 @@ namespace Mappers
             return _allShares;
         }
 
-        public IEnumerable<Share> GetAllAfterDate(DateTime date)
+        public IEnumerable<Share> GetAllAfterStamp(long stamp)
         {
-            return _allShares.Where(t => t.Date > date);
+            return _allShares.Where(t => t.Stamp > stamp);
         }
     }
 }

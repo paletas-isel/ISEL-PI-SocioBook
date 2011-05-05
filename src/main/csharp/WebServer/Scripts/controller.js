@@ -5,23 +5,21 @@ function Controller(view, model)
 		
 	this.SubmitTextShare_OnClick = function()
 	{
-		var share = ShareContainer.AddShare(new model.TextShare("Dummy", document.getElementById("content-share-textarea").value));
-		
-		ShareView.ShareText(share);		
+		var share = new model.TextShare("Dummy", document.getElementById("content-share-textarea").value);
+        share = ShareContainer.AddShare(share, function() { ShareView.ShareText(share) });		
+			
 	};
 	
 	this.SubmitLinkShare_OnClick = function()
 	{
-		var share = ShareContainer.AddShare(new model.AnchorShare("Dummy", document.getElementById("content-share-textarea").value));
-		
-		ShareView.ShareAnchor(share);	
+		var share = new model.AnchorShare("Dummy", document.getElementById("content-share-textarea").value);
+        share = ShareContainer.AddShare(share, function() { ShareView.ShareAnchor(share) });	
 	};
 	
 	this.SubmitVideoShare_OnClick = function()
 	{
-		var share = ShareContainer.AddShare(new model.VideoShare("Dummy", document.getElementById("content-share-textarea").value));
-		
-		ShareView.ShareVideo(share);
+	    var share = new model.VideoShare("Dummy", document.getElementById("content-share-textarea").value);
+	    share = ShareContainer.AddShare(share, function () { ShareView.ShareVideo(share) });		
 	};
 
 	this.RemoveShare = function(shareHTML, shareModel)
