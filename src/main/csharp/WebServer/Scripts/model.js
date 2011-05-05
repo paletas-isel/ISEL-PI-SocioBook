@@ -26,6 +26,7 @@ function Model()
 		this.GetContent = function() {
 			return content;
 		}
+
 	}
 	
 	this.AnchorShare = function(newUser, newURL)
@@ -65,5 +66,51 @@ function Model()
 							});
 			return share;
 		}
+    }
+
+/****************************************** Parte com AJAX ********************************************/
+	/*this.ShareContainer = function () {
+
+	    this.AddShare = function (share) {
+	        sendShare(createXHR(), share, "A");
+	        return share;
+	    }
+
+	    this.RemoveShare = function (share) {
+	        sendShare(createXHR(), share, "R");
+	        return share;
+	    }
 	}
+
+	function createXHR() {
+	    var xhr;
+	    if (window.XMLHttpRequest) {
+	        // If IE7, Mozilla, Safari, etc.
+	        xhr = new XMLHttpRequest()
+	    }
+	    else {
+	        if (window.ActiveXObject) {
+
+	            // ...otherwise, use the ActiveX control for IE5.x and IE6
+	            xhr = new ActiveXObject("Microsoft.XMLHTTP");
+	        }
+	    }
+	    return xhr;
+	}
+
+	function sendShare(xhr, share, action) {
+	    xhr.open("POST", "../Handlers/SharesHandler.ashx", true);
+
+	    xhr.onreadystatechange = function () {
+	        if (xhr.readyState == 4 && xhr.status == 200) {
+	            alert(xhr.responseText);
+	        }
+	    }
+
+        xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+	    xhr.send(  action + "\n"
+                 + share.GetUser() + "\n"
+                 + share.GetContent()
+                );
+	}*/
 }
