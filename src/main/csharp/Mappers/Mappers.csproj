@@ -40,8 +40,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
+=======
     <Compile Include="ShareMapper.cs" />
+>>>>>>> 897807e209c08b06df84c86de9829f5f969ca9e1
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShareMapper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{B134FDC1-A2CB-4AD5-A106-DB236EFF5201}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Model\Model.csproj">
