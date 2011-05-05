@@ -66,14 +66,33 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Handlers\MainHandler.ashx.cs">
-      <DependentUpon>MainHandler.ashx</DependentUpon>
+    <Compile Include="Handlers\Shares\AddShare.ashx.cs">
+      <DependentUpon>AddShare.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\Shares\GetShare.ashx.cs">
+      <DependentUpon>GetShare.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\Shares\RemoveShare.ashx.cs">
+      <DependentUpon>RemoveShare.ashx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Content Include="Handlers\MainHandler.ashx" />
+    <Content Include="Handlers\Shares\AddShare.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Handlers\Shares\RemoveShare.ashx" />
+    <Content Include="Handlers\Shares\GetShare.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mappers\Mappers.csproj">
+      <Project>{BAFEF3C4-562E-4FD6-A50D-FD63918F2AEF}</Project>
+      <Name>Mappers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{B134FDC1-A2CB-4AD5-A106-DB236EFF5201}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace WebServer.Handlers
+namespace WebServer.Handlers.Shares
 {
     /// <summary>
-    /// Summary description for MainHandler
+    /// Summary description for GetShare
     /// </summary>
-    public class MainHandler : IHttpHandler
+    public class GetShare : IHttpHandler
     {
 
         public void ProcessRequest(HttpContext context)

@@ -2,12 +2,12 @@
 
 namespace Model
 {
-    public class Share
+    public abstract class Share
     {
         private readonly DateTime _date;
         private readonly string _user;
 
-        public Share(string user, DateTime date)
+        protected Share(string user, DateTime date)
         {
             _user = user;
             _date = date;
