@@ -66,7 +66,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Handlers\Shares\AddShare.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Handlers\Controller\BaseController.cs" />
+    <Compile Include="Controllers\SharesController.cs" />
+    <Compile Include="Handlers\Controller\ViewResult.cs" />
+    <Compile Include="Handlers\GenericHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

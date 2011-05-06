@@ -4,18 +4,14 @@ namespace Model
 {
     public abstract class Share
     {
-        private static long _masterStamp = 0;
-
-        private readonly long _stamp;
         private readonly string _user;
 
         protected Share(string user)
         {
             _user = user;
-            _stamp = _masterStamp++;
         }
 
-        public long Stamp { get { return _stamp; } }
+        public long Stamp { get; set; }
 
         public string User { get { return _user; } }
     }
@@ -36,6 +32,11 @@ namespace Model
     {
         private readonly Uri _anchor;
 
+        public AnchorShare(string user, string anchor) : base(user)
+        {
+            _anchor = new Uri(anchor);
+        }
+
         public AnchorShare(string user, Uri anchor) : base(user)
         {
             _anchor = anchor;
@@ -46,6 +47,11 @@ namespace Model
 
     public class VideoShare : AnchorShare
     {
+        public VideoShare(string user, string video) : base(user, video)
+        {
+
+        }
+
         public VideoShare(string user, Uri video) : base(user, video)
         {
 
