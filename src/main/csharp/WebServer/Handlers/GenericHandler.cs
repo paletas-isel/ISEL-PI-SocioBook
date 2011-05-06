@@ -55,7 +55,7 @@ namespace WebServer.Handlers
             if(_controllers.ContainsKey(controllerPath))
             {
                 Type controller = _controllers[controllerPath];
-                object controllerObj = controller.GetConstructor(new Type[0]).Invoke(new object[0]);
+                BaseController controllerObj = controller.GetConstructor(new Type[0]).Invoke(new object[0]) as BaseController;
 
                 string methodName = "";
 
@@ -71,40 +71,11 @@ namespace WebServer.Handlers
                 var method = controller.GetMethod(methodName);
                 if (method != null && (typeof(ViewResultBase).IsAssignableFrom(method.ReturnType) || typeof(IViewResult).IsAssignableFrom(method.ReturnType)))
                 {
-                    NameValueCollection httpParams = null;
-
-                    if(context.Request.RequestType.Equals("GET"))
-                    {
-                        httpParams = context.Request.QueryString;
-                    } 
-                    else if(context.Request.RequestType.Equals("POST"))
-                    {
-                        httpParams = context.Request.Form;
-                    }
-
+                    NameValueCollection httpParams = GetParameters(context.Request);
+                    
                     if(httpParams != null)
                     {
-                        ParameterInfo[] allparams = method.GetParameters();
-                        object[] concreteParams = new object[allparams.Length];
-                        int count = 0;
-                        foreach (var param in allparams)
-                        {
-                            bool hasValue;
-                            if ((hasValue = (httpParams[param.Name] != null)) || !param.ParameterType.IsValueType || Nullable.GetUnderlyingType(param.ParameterType) != null)
-                            {
-                                if(hasValue)
-                                    concreteParams[count++] = Convert.ChangeType(httpParams[param.Name], param.ParameterType);
-                                else
-                                    concreteParams[count++] = null;
-                            }
-                            else
-                            {
-                                context.Response.ContentType = "text/plain";
-                                context.Response.Write("Unavailable Content");
-                            }
-                        }
-
-                        var methodReturn = method.Invoke(controllerObj, concreteParams);
+                        var methodReturn = InvokeControllerMethod(method, httpParams, context, controllerObj);
                         ViewResultBase methodResultB = methodReturn as ViewResultBase;
                         if(methodResultB != null)
                         {
@@ -133,6 +104,44 @@ namespace WebServer.Handlers
                 context.Response.ContentType = "text/plain";
                 context.Response.Write("Unavailable Content");
             }
+        }
+
+        private static object InvokeControllerMethod(MethodInfo method, NameValueCollection httpParams, HttpContext context, BaseController controller)
+        {
+            ParameterInfo[] allparams = method.GetParameters();
+            object[] concreteParams = new object[allparams.Length];
+            int count = 0;
+            foreach (var param in allparams)
+            {
+                bool hasValue;
+                if ((hasValue = (httpParams[param.Name] != null)) || !param.ParameterType.IsValueType || Nullable.GetUnderlyingType(param.ParameterType) != null)
+                {
+                    if (hasValue)
+                        concreteParams[count++] = Convert.ChangeType(httpParams[param.Name], param.ParameterType);
+                    else
+                        concreteParams[count++] = null;
+                }
+                else
+                {
+                    context.Response.ContentType = "text/plain";
+                    context.Response.Write("Unavailable Content");
+                }
+            }
+
+            return method.Invoke(controller, concreteParams);
+        }
+
+        private NameValueCollection GetParameters(HttpRequest httpRequest)
+        {
+            if (httpRequest.RequestType.Equals("GET"))
+            {
+                return httpRequest.QueryString;
+            }
+            if (httpRequest.RequestType.Equals("POST"))
+            {
+                return httpRequest.Form;
+            }
+            return null;
         }
 
         #endregion
