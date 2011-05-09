@@ -67,12 +67,12 @@ namespace WebServer.Handlers.Controller
 
         private static string GenerateCompletePage(string fileName, params string[] param)
         {
-            StreamReader reader = new StreamReader(fileName);
-            string content = reader.ReadToEnd();
-
-            string.Format(content, param);
-
-            return content;
+            string content;
+            using (StreamReader reader = new StreamReader(HttpRuntime.AppDomainAppPath + fileName))
+            {
+                content = reader.ReadToEnd();
+            }
+            return string.Format(content, param);
         }
 
         #region Overrides of ViewResultBase<IntPtr>

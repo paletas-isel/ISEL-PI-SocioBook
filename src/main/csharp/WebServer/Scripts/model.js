@@ -66,21 +66,31 @@ function Model()
 	    var shares = [];
 
 	    this.AddShare = function (share, callback) {
-	        $.post("/Shares/Add", { user: share.GetUser(), type: share.GetType(), content: share.GetContent() }, function (data) { share.SetStamp(Number(data)); callback(); });
+	        $.post("/Shares/Add", { user: share.GetUser(), type: share.GetType(), content: share.GetContent() }, function (data) { share.SetStamp(Number(data)); shares.push(share); callback(); });
 
-	        shares.push(share);
 	        return share;
 	    };
 
-	    this.RemoveShare = function (share, callback) {
-	        $.post("/Shares/Remove", { user: share.GetUser(), stamp: share.GetStamp() }, callback);
-
+	    function Remove(callback) {
 	        shares.forEach(function (oShare, shareIdx) {
 	            if (share.Equals(oShare))
 	                shares.splice(shareIdx, 1);
 	        });
+
+	        callback();
+	    }
+
+	    this.RemoveShare = function (share, callback) {
+	        $.post("/Shares/Remove", { user: share.GetUser(), stamp: share.GetStamp() }, function () { Remove(callback); });
+
 	        return share;
 	    };
+
+	    this.RemoveByStamp = function (user, stamp, callback) {
+	        $.post("/Shares/Remove", { user: user, stamp: stamp }, function () { Remove(callback); });
+
+	        return share;
+	    }
 
 	    this.GetShares = function (user, callback, newestStamp, oldestStamp) {
 	        var params;
@@ -93,6 +103,6 @@ function Model()
 
 	        $.post("/Shares/Get", params, callback);
 	    };
-       
+
 	}
 }

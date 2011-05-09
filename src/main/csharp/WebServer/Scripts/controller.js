@@ -2,7 +2,7 @@ function Controller(view, model)
 {
 	var ShareContainer = new model.ShareContainer();
 	var ShareView = new view.Share();
-	var User;
+	var User = document.location.search.slice(document.location.search.indexOf("user=") + 5);
 	var MostRecentStamp;
 	var OldestStamp;
 
@@ -37,8 +37,13 @@ function Controller(view, model)
 	    ShareContainer.RemoveShare(shareModel);
 	};
 
+	this.RemoveShareByStamp = function (shareHTML, shareStamp) {
+	    ShareView.RemoveShare(shareHTML);
+	    ShareContainer.RemoveByStamp(User, shareStamp);
+	};
+
 	this.UpdateShares = function () {
-        ShareContainer.   
+        
 	};
 
 	this.SetUser = function (nUser) {

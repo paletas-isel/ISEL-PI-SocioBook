@@ -16,16 +16,7 @@ function View()
 						$("#content-share-textarea").keyup(function() {
 							Grow();
 						});
-
-                        $("#shares").hide();
-
-                        $("#user-login > input[type='submit']").click(
-                            function() { 
-                                $("#user-login").hide(); 
-                                $("#shares").show(); 
-                                Controller.SetUser($("#user-login > input[type='text']")[0].value);
-                            });
-
+                        
 	                    SetOption(status);
 					}
 	

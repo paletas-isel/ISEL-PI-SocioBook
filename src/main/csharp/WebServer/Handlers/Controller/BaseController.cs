@@ -2,6 +2,11 @@ namespace WebServer.Handlers.Controller
 {
     public class BaseController
     {
+        public ViewResult View(string fileName)
+        {
+            return new ViewResult(fileName);
+        } 
+
         public ViewResult View(string fileName, params string[] param)
         {
             return new ViewResult(fileName, param);

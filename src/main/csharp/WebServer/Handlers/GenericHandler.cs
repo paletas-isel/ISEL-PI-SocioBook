@@ -54,26 +54,19 @@ namespace WebServer.Handlers
             
             string methodName = "";
 
-            if (_controllers.ContainsKey(controllerPath))
-            {
-                methodName = controllerPath;
-                controllerPath = "/";
-            }
-
             Type controller = _controllers[controllerPath];
             BaseController controllerObj = Activator.CreateInstance(controller) as BaseController;
 
-            if(methodName.Equals(""))
+            if (context.Request.Url.LocalPath.Length >= 2)
             {
-                if (context.Request.Url.LocalPath.Length >= 2)
-                {
-                    idx = context.Request.Url.LocalPath.IndexOf("/", 2);
-                    methodName = context.Request.Url.LocalPath.Substring(idx + 1);
-                }
-
-                if (methodName.Equals(""))
-                    methodName = "Index";
+                idx = context.Request.Url.LocalPath.IndexOf("/", 2);
+                if (idx == -1) idx = context.Request.Url.LocalPath.IndexOf("/", 0);
+                methodName = context.Request.Url.LocalPath.Substring(idx + 1);
             }
+
+            if (methodName.Equals(""))
+                methodName = "Index";
+            
 
             var method = controller.GetMethod(methodName);
             if (method != null && (typeof(ViewResultBase).IsAssignableFrom(method.ReturnType) || typeof(IViewResult).IsAssignableFrom(method.ReturnType)))

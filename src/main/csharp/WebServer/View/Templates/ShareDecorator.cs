@@ -84,7 +84,7 @@ namespace WebServer.View.Templates
 
     public class DecoratorComposite : IHtmlDecorator
     {
-        private IHtmlDecorator[] _decorators;
+        private readonly IHtmlDecorator[] _decorators;
 
         public DecoratorComposite(params IHtmlDecorator[] decorators)
         {
@@ -108,61 +108,58 @@ namespace WebServer.View.Templates
 
     public class DecoratorContainer
     {
-        private IDictionary<Type, IHtmlDecorator> _container = 
-            new Dictionary<Type, IHtmlDecorator>()
+        private readonly IDictionary<Type, IDecoratorFactory<IHtmlDecorator>> _container =
+            new Dictionary<Type, IDecoratorFactory<IHtmlDecorator>>()
                 {
-                    {typeof(TextShare), new TextShareDecorator()}
-                }
-
-        public DecoratorContainer()
-        {
-            
-        }
-
+                    {typeof (TextShare), new TextShareDecoratorFactory()},
+                    {typeof (AnchorShare), new AnchorShareDecoratorFactory()},
+                    {typeof (VideoShare), new VideoShareDecoratorFactory()}
+                };
+        
         public IHtmlDecorator CreateInstance(Share share)
         {
             Type exactType = share.GetType();
 
-            
+            return _container[exactType].CreateInstance(share);
         }
     }
 
-    public interface IDecoratorFactory<out T, in TI>
+    public interface IDecoratorFactory<out T> where T : IHtmlDecorator
     {
-        T CreateInstance(TI inst);
+        T CreateInstance(Share inst);
     }
 
-    public class TextShareDecoratorFactory : IDecoratorFactory<TextShareDecorator, TextShare>
+    public class TextShareDecoratorFactory : IDecoratorFactory<TextShareDecorator>
     {
         #region Implementation of IDecoratorFactory<out TextShareDecorator,in TextShare>
 
-        public TextShareDecorator CreateInstance(TextShare inst)
+        public TextShareDecorator CreateInstance(Share inst)
         {
-            throw new NotImplementedException();
+            return new TextShareDecorator(inst as TextShare);
         }
 
         #endregion
     }
 
-    public class AnchorShareDecoratorFactory : IDecoratorFactory<AnchorShareDecorator, AnchorShare>
+    public class AnchorShareDecoratorFactory : IDecoratorFactory<AnchorShareDecorator>
     {
         #region Implementation of IDecoratorFactory<out AnchorShareDecorator,in AnchorShare>
 
-        public AnchorShareDecorator CreateInstance(AnchorShare inst)
+        public AnchorShareDecorator CreateInstance(Share inst)
         {
-            throw new NotImplementedException();
+            return new AnchorShareDecorator(inst as AnchorShare);
         }
 
         #endregion
     }
 
-    public class VideoShareDecoratorFactory : IDecoratorFactory<VideoShareDecorator, VideoShare>
+    public class VideoShareDecoratorFactory : IDecoratorFactory<VideoShareDecorator>
     {
         #region Implementation of IDecoratorFactory<out VideoShareDecorator,in VideoShare>
 
-        public VideoShareDecorator CreateInstance(VideoShare inst)
+        public VideoShareDecorator CreateInstance(Share inst)
         {
-            throw new NotImplementedException();
+            return new VideoShareDecorator(inst as VideoShare);
         }
 
         #endregion
