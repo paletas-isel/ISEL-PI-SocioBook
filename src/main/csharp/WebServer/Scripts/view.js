@@ -161,12 +161,12 @@ function View()
 		this.RemoveShare = function(share)
 		{
 			//$("#content-shared").remove(share);
-            share.remove();
+            $("#"+share).remove();
 		}
 
-		function Share(user, deleteF)
+		function Share(user, id, deleteF)
 		{
-			var textShare = $('<div></div>').addClass("share");
+			var textShare = $('<div></div>').addClass("share").attr("id", id);
 
 			var deleteShare = $('<div class="delete-share">X</div>').click(deleteF); 
 			
@@ -185,8 +185,8 @@ function View()
 		
 		this.ShareText = function(share)
 		{			
-			var pShare = Share(share.GetUser(), function() {
-													Controller.RemoveShare(pShare.parent(), share);
+			var pShare = Share(share.GetUser(), share.GetStamp(), function() {
+													Controller.RemoveShare(share.GetStamp());
 												});
 			pShare.append(TransformIntoUrl(share.GetContent()));
 		};
@@ -194,8 +194,8 @@ function View()
 		this.ShareAnchor = function(share)
 		{						
 			var thumb = GetThumbnail(share.GetContent());
-			    var pShare = Share(share.GetUser(), function() {
-													    Controller.RemoveShare(pShare.parent(), share);
+			    var pShare = Share(share.GetUser(), share.GetStamp(), function() {
+													    Controller.RemoveShare(share.GetStamp());
 												    });
 			
 			// Temporary version (bad code!)
@@ -223,8 +223,8 @@ function View()
 			var iframeShare = $("<iframe></iframe>").addClass("video-share");
 			iframeShare.attr("src", url);
 			
-			var pShare = Share(share.GetUser(), function() {
-													Controller.RemoveShare(pShare.parent(), share);
+			var pShare = Share(share.GetUser(), share.GetStamp(), function() {
+													Controller.RemoveShare(share.GetStamp());
 												});
 			pShare.append(iframeShare);
 		};

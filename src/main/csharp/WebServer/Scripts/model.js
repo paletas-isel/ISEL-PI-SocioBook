@@ -71,26 +71,18 @@ function Model()
 	        return share;
 	    };
 
-	    function Remove(callback) {
+	    function Remove(stamp, callback) {
 	        shares.forEach(function (oShare, shareIdx) {
-	            if (share.Equals(oShare))
+	            if (oShare.GetStamp() == stamp)
 	                shares.splice(shareIdx, 1);
 	        });
 
 	        callback();
 	    }
 
-	    this.RemoveShare = function (share, callback) {
-	        $.post("/Shares/Remove", { user: share.GetUser(), stamp: share.GetStamp() }, function () { Remove(callback); });
-
-	        return share;
-	    };
-
-	    this.RemoveByStamp = function (user, stamp, callback) {
-	        $.post("/Shares/Remove", { user: user, stamp: stamp }, function () { Remove(callback); });
-
-	        return share;
-	    }
+	    this.RemoveShare = function (user, stamp, callback) {
+	        $.post("/Shares/Remove", { user: user, stamp: stamp }, function () { Remove(stamp, callback); });
+  	    }
 
 	    this.GetShares = function (user, callback, newestStamp, oldestStamp) {
 	        var params;
@@ -101,7 +93,7 @@ function Model()
 	            params = { user: user, newestStamp: newestStamp };
 	        }
 
-	        $.post("/Shares/Get", params, callback);
+	        $.post("/Shares/Get", params, function (data) { callback(data); });
 	    };
 
 	}

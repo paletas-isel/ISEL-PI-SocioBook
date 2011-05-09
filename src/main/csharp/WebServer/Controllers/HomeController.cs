@@ -25,8 +25,22 @@ namespace WebServer.Controllers
             DecoratorContainer container = new DecoratorContainer();
 
             IEnumerable<IHtmlDecorator> decorators = allShares.Select(container.CreateInstance);
+            long biggestStamp = -1;
+            long smallestStamp = long.MaxValue;
 
-            return View("\\View\\wall.html", new DecoratorComposite(decorators.ToArray()).ToHtmlView());
+            foreach(Share s in allShares)
+            {
+                if (s.Stamp > biggestStamp) biggestStamp = s.Stamp;
+
+                if (s.Stamp < smallestStamp) smallestStamp = s.Stamp;
+            }
+
+            if(biggestStamp == -1)
+            {
+                biggestStamp = smallestStamp = 0;
+            }
+
+            return View("\\View\\wall.html", biggestStamp.ToString(), smallestStamp.ToString(), new DecoratorComposite(decorators.ToArray()).ToHtmlView());
         }
     }
 }
