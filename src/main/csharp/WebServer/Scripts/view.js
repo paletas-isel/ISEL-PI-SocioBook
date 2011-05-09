@@ -17,12 +17,27 @@ function View()
 							Grow();
 						});
 
+                        $("#shares").hide();
+
+                        $("#user-login > input[type='submit']").click(
+                            function() { 
+                                $("#user-login").hide(); 
+                                $("#shares").show(); 
+                                Controller.SetUser($("#user-login > input[type='text']")[0].value);
+                            });
+
 	                    SetOption(status);
 					}
 	
+    function AddShare(addFunction) {    
+        var content = $("#content-share-textarea")[0].value;
+		addFunction(content);
+        $("#content-share-textarea")[0].value = "";
+    };
+
 	function StatusAnchorsStatus_OnClick()
 	{
-		$("#content-share-submit").unbind("click").click(Controller.SubmitTextShare_OnClick);
+        $("#content-share-submit").unbind("click").click(function() { AddShare(Controller.AddTextShare); });
 		SetOption('status');
 	};
 	
@@ -35,13 +50,13 @@ function View()
 	
 	function StatusAnchorsLink_OnClick()
 	{
-		$("#content-share-submit").unbind("click").click(Controller.SubmitLinkShare_OnClick);
+		$("#content-share-submit").unbind("click").click(function() { AddShare(Controller.AddAnchorShare); });
 		SetOption('link');
 	};
 	
 	function StatusAnchorsVideo_OnClick()
 	{
-		$("#content-share-submit").unbind("click").click(Controller.SubmitVideoShare_OnClick);
+		$("#content-share-submit").unbind("click").click(function() { AddShare(Controller.AddVideoShare); });
 		SetOption('video');
 	};
 	

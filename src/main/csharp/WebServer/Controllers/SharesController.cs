@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Mappers;
 using Model;
 using WebServer.Handlers.Controller;
+using System.Linq;
 
 namespace WebServer.Controllers
 {
@@ -23,7 +25,8 @@ namespace WebServer.Controllers
                 {
                     Share obj = ctr.Invoke(new string[2] {user, content}) as Share;
                     ShareMapper mapper = ShareMapper.Singleton;
-                    mapper.Add(obj);
+                    UserMapper mapperUser = UserMapper.Singleton;
+                    mapper.Add(mapperUser.Get(user), obj);
 
                     if (obj != null) return ViewText(obj.Stamp.ToString());
                 }
@@ -34,12 +37,36 @@ namespace WebServer.Controllers
 
         public IViewResult Remove(string user, long stamp)
         {
-            return null;
+            ShareMapper mapper = ShareMapper.Singleton;
+            UserMapper mapperUser = UserMapper.Singleton;
+
+            User userO = mapperUser.Get(user);
+            mapper.Remove(userO, mapper.Get(userO, stamp));
+
+            return ViewText("");
         }
 
-        public IViewResult Get(long? newestStamp, long? oldestStamp)
+        public IViewResult Get(string user, long? newestStamp, long? oldestStamp)
         {
-            return null;
+            ShareMapper mapper = ShareMapper.Singleton; 
+            UserMapper mapperUser = UserMapper.Singleton;
+
+            User userO = mapperUser.Get(user);
+            List<Share> allShares;
+            if (!newestStamp.HasValue)
+            {
+                allShares = new List<Share>(mapper.GetAll(userO));
+            }
+            else
+            {
+                allShares = new List<Share>(mapper.GetAllAfterStamp(userO, newestStamp.Value));
+
+                if(oldestStamp.HasValue)
+                {
+                    allShares.AddRange(mapper.GetAllStampMissingBetween(userO, newestStamp.Value, oldestStamp.Value).Select(p => new TextShare("delete", "delete") { Stamp = p }));
+                }
+            }
+            return ViewJson(allShares.ToArray());
         }
     }
 }

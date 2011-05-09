@@ -2,31 +2,48 @@ function Controller(view, model)
 {
 	var ShareContainer = new model.ShareContainer();
 	var ShareView = new view.Share();
-		
-	this.SubmitTextShare_OnClick = function()
-	{
-		var share = new model.TextShare("Dummy", document.getElementById("content-share-textarea").value);
-        share = ShareContainer.AddShare(share, function() { ShareView.ShareText(share) });		
-			
-	};
-	
-	this.SubmitLinkShare_OnClick = function()
-	{
-		var share = new model.AnchorShare("Dummy", document.getElementById("content-share-textarea").value);
-        share = ShareContainer.AddShare(share, function() { ShareView.ShareAnchor(share) });	
-	};
-	
-	this.SubmitVideoShare_OnClick = function()
-	{
-	    var share = new model.VideoShare("Dummy", document.getElementById("content-share-textarea").value);
-	    share = ShareContainer.AddShare(share, function () { ShareView.ShareVideo(share) });		
+	var User;
+	var MostRecentStamp;
+	var OldestStamp;
+
+	function UpdateState(share) {
+	    if (share.stamp > MostRecentStamp) MostRecentStamp = share.stamp;
+
+	    if (share.stamp < OldestStamp) OldestStamp = share.stamp;
 	};
 
-	this.RemoveShare = function(shareHTML, shareModel)
+	this.AddTextShare = function (content) {
+	    var share = new model.TextShare(User, content);
+	    share = ShareContainer.AddShare(share, function () { ShareView.ShareText(share) });
+	    UpdateState(share);
+	};
+
+    this.AddAnchorShare = function (content)
 	{
-		ShareView.RemoveShare(shareHTML);
-		ShareContainer.RemoveShare(shareModel);
-	}
+	    var share = new model.AnchorShare(User, content);
+	    share = ShareContainer.AddShare(share, function () { ShareView.ShareAnchor(share) });
+	    UpdateState(share);
+	};
+
+    this.AddVideoShare = function (content)
+	{
+	    var share = new model.VideoShare(User, content);
+	    share = ShareContainer.AddShare(share, function () { ShareView.ShareVideo(share) });
+	    UpdateState(share);		
+	};
+
+	this.RemoveShare = function (shareHTML, shareModel) {
+	    ShareView.RemoveShare(shareHTML);
+	    ShareContainer.RemoveShare(shareModel);
+	};
+
+	this.UpdateShares = function () {
+        ShareContainer.   
+	};
+
+	this.SetUser = function (nUser) {
+	    User = nUser;
+	};
 	
 	view.SetController(this);
 	

@@ -25,12 +25,16 @@
 				</ul>
 			</div>           
 
-			<div id="content">
-                <div id="user-login">
-                    <form method="get" action="/Wall">
-                        User Name: <input name="user" type="text" />
-                        <input type="submit" value="Choose user" />                
-                    </form>
+			<div id="content">                
+                <div id="shares">            
+				    <h2 id="content-share-title">What's on your mind?</h2>
+				    <div id="content-share">
+					    <textarea id="content-share-textarea"></textarea>
+					    <input id="content-share-submit" type="submit" value="Submit"/>
+				    </div>
+				    <div id="content-shared">					
+				        {0}  		
+				    </div>
                 </div>				
 			</div>
 		</div>

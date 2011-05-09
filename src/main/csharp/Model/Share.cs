@@ -14,6 +14,8 @@ namespace Model
         public long Stamp { get; set; }
 
         public string User { get { return _user; } }
+
+        public abstract string Type { get; }
     }
 
     public class TextShare : Share
@@ -26,6 +28,15 @@ namespace Model
         }
 
         public string Text { get { return _text; } }
+
+        #region Overrides of Share
+
+        public override string Type
+        {
+            get { return "text"; }
+        }
+
+        #endregion
     }
 
     public class AnchorShare : Share
@@ -43,6 +54,15 @@ namespace Model
         }
 
         public Uri Anchor { get { return _anchor; } }
+
+        #region Overrides of Share
+
+        public override string Type
+        {
+            get { return "anchor"; }
+        }
+
+        #endregion
     }
 
     public class VideoShare : AnchorShare
@@ -56,5 +76,14 @@ namespace Model
         {
 
         }
+
+        #region Overrides of Share
+
+        public override string Type
+        {
+            get { return "video"; }
+        }
+
+        #endregion
     }
 }

@@ -51,15 +51,21 @@ namespace WebServer.Handlers
                 controllerPath = context.Request.Url.LocalPath.Substring(1, idx - 1);
             else
                 controllerPath = "/";
+            
+            string methodName = "";
 
-            if(_controllers.ContainsKey(controllerPath))
+            if (_controllers.ContainsKey(controllerPath))
             {
-                Type controller = _controllers[controllerPath];
-                BaseController controllerObj = controller.GetConstructor(new Type[0]).Invoke(new object[0]) as BaseController;
+                methodName = controllerPath;
+                controllerPath = "/";
+            }
 
-                string methodName = "";
+            Type controller = _controllers[controllerPath];
+            BaseController controllerObj = Activator.CreateInstance(controller) as BaseController;
 
-                if(context.Request.Url.LocalPath.Length >= 2)
+            if(methodName.Equals(""))
+            {
+                if (context.Request.Url.LocalPath.Length >= 2)
                 {
                     idx = context.Request.Url.LocalPath.IndexOf("/", 2);
                     methodName = context.Request.Url.LocalPath.Substring(idx + 1);
@@ -67,36 +73,31 @@ namespace WebServer.Handlers
 
                 if (methodName.Equals(""))
                     methodName = "Index";
+            }
 
-                var method = controller.GetMethod(methodName);
-                if (method != null && (typeof(ViewResultBase).IsAssignableFrom(method.ReturnType) || typeof(IViewResult).IsAssignableFrom(method.ReturnType)))
-                {
-                    NameValueCollection httpParams = GetParameters(context.Request);
+            var method = controller.GetMethod(methodName);
+            if (method != null && (typeof(ViewResultBase).IsAssignableFrom(method.ReturnType) || typeof(IViewResult).IsAssignableFrom(method.ReturnType)))
+            {
+                NameValueCollection httpParams = GetParameters(context.Request);
                     
-                    if(httpParams != null)
-                    {
-                        var methodReturn = InvokeControllerMethod(method, httpParams, context, controllerObj);
-                        ViewResultBase methodResultB = methodReturn as ViewResultBase;
-                        if(methodResultB != null)
-                        {
-                            methodResultB.WriteContent(context.Response);
-                        }
-                        else
-                        {
-                            IViewResult methodResult = methodReturn as IViewResult;
-                            if (methodResult != null)
-                            {
-                                context.Response.ContentType = methodResult.ContentType;
-                                context.Response.Write(methodResult.GetContent());
-                            }
-                        }
-
-                    }
-                }
-                else
+                if(httpParams != null)
                 {
-                    context.Response.ContentType = "text/plain";
-                    context.Response.Write("Unavailable Content");
+                    var methodReturn = InvokeControllerMethod(method, httpParams, context, controllerObj);
+                    ViewResultBase methodResultB = methodReturn as ViewResultBase;
+                    if(methodResultB != null)
+                    {
+                        methodResultB.WriteContent(context.Response);
+                    }
+                    else
+                    {
+                        IViewResult methodResult = methodReturn as IViewResult;
+                        if (methodResult != null)
+                        {
+                            context.Response.ContentType = methodResult.ContentType;
+                            context.Response.Write(methodResult.GetContent());
+                        }
+                    }
+
                 }
             }
             else
