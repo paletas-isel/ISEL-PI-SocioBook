@@ -8,9 +8,12 @@ namespace Model
 
         public string Name { get; private set; }
 
-        public User(string name)
+        public string Password { get; private set; }
+
+        public User(string name, string password)
         {
             Name = name;
+            Password = password;
             Shares = new List<Share>();
         }
     }

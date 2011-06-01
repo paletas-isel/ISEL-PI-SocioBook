@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<div id="container" class="subpage">
+	<div id="content">
+        <div id="user-login">
+            <form method="get" action="/Wall">
+                <span id="user-name"> User Name: </span> <input name="user" type="text" />
+                <span id="password"> Password: </span> <input name="password" type="password" />
+                <input type="submit" value="Sign in" />                
+            </form>
+        </div>				
+	</div>
+</div>

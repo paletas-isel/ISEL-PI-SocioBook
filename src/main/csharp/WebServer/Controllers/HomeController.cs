@@ -20,7 +20,7 @@ namespace WebServer.Controllers
             ShareMapper shareMapper = ShareMapper.Singleton;
 
             User userO = userMapper.Get(user);
-            IEnumerable<Share> allShares = shareMapper.GetAll(userO).OrderByDescending(p=> p.Stamp);
+            IEnumerable<Share> allShares = shareMapper.GetAll(userO).OrderByDescending(share => share.Stamp);
 
             DecoratorContainer container = new DecoratorContainer();
 

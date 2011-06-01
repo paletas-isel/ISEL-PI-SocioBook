@@ -20,14 +20,14 @@ namespace Model
 
     public class TextShare : Share
     {
-        private readonly string _text;
+        private readonly string _content;
 
-        public TextShare(string user, string text) : base(user)
+        public TextShare(string user, string content) : base(user)
         {
-            _text = text;
+            _content = content;
         }
 
-        public string Text { get { return _text; } }
+        public string Content { get { return _content; } }
 
         #region Overrides of Share
 
@@ -41,19 +41,19 @@ namespace Model
 
     public class AnchorShare : Share
     {
-        private readonly Uri _anchor;
+        private readonly Uri _content;
 
         public AnchorShare(string user, string anchor) : base(user)
         {
-            _anchor = new Uri(anchor);
+            _content = new Uri(anchor);
         }
 
-        public AnchorShare(string user, Uri anchor) : base(user)
+        public AnchorShare(string user, Uri content) : base(user)
         {
-            _anchor = anchor;
+            _content = content;
         }
 
-        public Uri Anchor { get { return _anchor; } }
+        public Uri Content { get { return _content; } }
 
         #region Overrides of Share
 

@@ -54,7 +54,7 @@ namespace Mappers
             User user = _allUsers.Where(p => p.Name.Equals(name)).SingleOrDefault();
             if(user == null)
             {
-                user = new User(name);
+                user = new User(name, "teste");
                 _allUsers.AddLast(user);
             }
             return user;

@@ -4,7 +4,7 @@ using System.Text;
 using System.Web;
 using Model;
 
-namespace WebServer.View.Templates
+namespace WebServerMVC.Models
 {
     public interface IHtmlDecorator
     {
