@@ -1,0 +1,20 @@
+﻿@model String
+
+@{
+    ViewBag.Title = "LogOn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>LogOn</h2>
+
+@Html.BeginForm("LogOn", "Account", FormMethod.Post)
+
+    @Html.Label("username", "Username")
+    @Html.TextBox("username", null, new { id = "username" })
+
+    @Html.Label("password", "Password")
+    @Html.Password("password", null, new { id = "password" })
+
+    @Html.Hidden("returnUrl", Model)
+    
+@Html.EndForm()
