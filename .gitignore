@@ -1,5 +1,5 @@
-*/obj/*
-*/bin/*
+*obj*
+*bin*
 *ReSharper*
 /src/main/csharp/Model/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
 /src/main/csharp/WebServer.suo
@@ -14,3 +14,4 @@
 /src/main/csharp/WebServer.suo
 /src/main/csharp/WebServer/WebServer.csproj.user
 /src/main/csharp/WebServer/WebServer.suo
+*user
