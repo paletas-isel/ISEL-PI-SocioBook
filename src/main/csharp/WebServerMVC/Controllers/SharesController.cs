@@ -11,10 +11,9 @@ namespace WebServerMVC.Controllers
     public class SharesController : Controller
     {
         [HttpPost]
-        public string Add(string user, string type, string content)
+        public JsonResult Add(string user, string type, string content)
         {
-            if ((user == null || user.Equals("")) && User.Identity.IsAuthenticated)
-                user = User.Identity.Name;
+            var writer = User.Identity.Name;
             
             Type shareType = typeof (Share);
             Assembly modelAssembly = shareType.Assembly;
@@ -26,16 +25,16 @@ namespace WebServerMVC.Controllers
                 ConstructorInfo ctr = share.GetConstructor(new Type[2] {typeof(string), typeof (string)});
                 if (ctr != null)
                 {
-                    Share obj = ctr.Invoke(new string[2] {user, content}) as Share;
+                    Share obj = ctr.Invoke(new string[2] {writer, content}) as Share;
                     ShareMapper mapper = ShareMapper.Singleton;
                     UserMapper mapperUser = UserMapper.Singleton;
                     mapper.Add(mapperUser.Get(user), obj);
 
-                    if (obj != null) return obj.Stamp.ToString();
+                    if (obj != null) return Json(new {user = writer, stamp = obj.Stamp.ToString()});
                 }
-                return "Invalid share type!!";
+                return Json(new {error = "Invalid share type!"});
             }
-            return "Invalid share type!";
+            return Json(new { error = "Invalid share type!" });
         }
 
         [HttpPost]

@@ -9,8 +9,12 @@ function Model()
 
 		this.GetUser = function() {
 			return user;
-		}
-								
+        }
+
+        this.SetUser = function (nUser) {
+            user = nUser;
+        }
+        						
 		this.GetContent = function() {
 			return content;
 		}
@@ -52,7 +56,13 @@ function Model()
 	    var shares = [];
 
 	    this.AddShare = function (share, callback) {
-	        $.post("/Shares/Add", { user: share.GetUser(), type: share.GetType(), content: share.GetContent() }, function (data) { share.SetStamp(Number(data)); shares.push(share); callback(); });
+	        $.post("/Shares/Add", { user: share.GetUser(), type: share.GetType(), content: share.GetContent() },
+            function (data) {
+                share.SetStamp(Number(data.stamp));
+                share.SetUser(data.user);
+                shares.push(share);
+                callback(); 
+            });
 
 	        return share;
 	    };
