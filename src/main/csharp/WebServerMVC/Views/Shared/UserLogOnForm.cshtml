@@ -1,0 +1,15 @@
+﻿@model Tuple<string, string>
+
+@using(Html.BeginForm(Model.Item1, "Account", FormMethod.Post))
+{
+
+    @Html.Label("username", "Username")
+    @Html.TextBox("username", null, new { id = "username" })
+
+    @Html.Label("password", "Password")
+    @Html.Password("password", null, new { id = "password" })
+
+    @Html.Hidden("returnUrl", Model)
+
+    <input type="submit" value="@Model.Item2" /> 
+}

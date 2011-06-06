@@ -118,8 +118,10 @@ function View()
 	function SetOption(status) 
 	{
 		if (status && options[status]) {
-			$("#content-share-textarea").value = options[status].def;
-			$("#content-share-title")[0].innerHTML = options[status].title;
+			if($("#content-share-textarea"))
+                $("#content-share-textarea").value = options[status].def;
+			if($("#content-share-title")[0])
+                $("#content-share-title")[0].innerHTML = options[status].title;
 		}
 	};
 	

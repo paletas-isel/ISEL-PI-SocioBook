@@ -13,6 +13,9 @@ namespace WebServerMVC.Controllers
         [HttpPost]
         public string Add(string user, string type, string content)
         {
+            if ((user == null || user.Equals("")) && User.Identity.IsAuthenticated)
+                user = User.Identity.Name;
+            
             Type shareType = typeof (Share);
             Assembly modelAssembly = shareType.Assembly;
             string shareFullName = shareType.FullName;
@@ -38,6 +41,9 @@ namespace WebServerMVC.Controllers
         [HttpPost]
         public void Remove(string user, long stamp)
         {
+            if ((user == null || user.Equals("")) && User.Identity.IsAuthenticated)
+                user = User.Identity.Name;
+            
             ShareMapper mapper = ShareMapper.Singleton;
             UserMapper mapperUser = UserMapper.Singleton;
 
@@ -47,6 +53,9 @@ namespace WebServerMVC.Controllers
 
         public ActionResult Get(string user, long? newestStamp, long? oldestStamp)
         {
+            if ((user == null || user.Equals("")) && User.Identity.IsAuthenticated)
+                user = User.Identity.Name;
+            
             ShareMapper mapper = ShareMapper.Singleton; 
             UserMapper mapperUser = UserMapper.Singleton;
 

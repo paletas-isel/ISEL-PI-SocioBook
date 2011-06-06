@@ -1,4 +1,5 @@
 /* PAGE */
+
 body
 {
 	margin: 10px 0;
@@ -173,4 +174,101 @@ a:hover
 .user-share
 {
 	font-weight : bold;
+}
+
+#topbar
+{    
+    z-index : 100;
+    height:40px;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+#topbar-bg
+{   
+    background: -moz-linear-gradient(center top , #3366ff, #3300ff) repeat scroll 0 0 transparent;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;  
+}
+
+#topbar-inner
+{
+    position : relative;
+}
+
+#container
+{
+    margin-top : 50px;
+}
+
+#select-options
+{
+    background: -moz-linear-gradient(center top , #3300ff, #3300cc) repeat scroll 0 0 transparent;
+    display : inline;
+    padding : 5px 5px 5px 5px;
+    position : absolute;
+    top : 30px;
+    right : 0px;
+    border-radius : 0px 0px 10px 10px;
+}
+
+#links
+{
+    position : absolute;
+    width : auto;
+    right : 10px;
+    height : 100%;
+}
+
+#user-links
+{
+    margin-top : 5px;
+    position : relative;
+    font-weight : bold;
+    height : 35px;
+}
+
+#user-links a, #user-links a:hover, #user-links #main, #user-links input[type="submit"]
+{   
+    color : White;   
+    font-style : normal; 
+    text-decoration : none;
+    cursor : pointer;
+    display : inline-block;
+    margin-top : 5px;
+}
+
+#user-links input[type="submit"]
+{
+    background-color : transparent;
+    border : 0px;  
+	font: 12px Lucida Grande, Arial, sans-serif;
+	font-weight : bold;
+}
+
+#user-links #main
+{
+    border-right : 2px black;
+    margin : 0px;
+    padding : 0px;
+}
+
+#logo
+{
+    font: 30px Arial, sand-serif;
+    font-weight : Bold;   
+    color : White;
+    position : absolute;
+    left : 20px;
+}
+
+#logo > a
+{
+    text-decoration : none;
+    color : inherit;   
 }

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Mappers;
+using Model;
+using WebServerMVC.Models;
 
 namespace WebServerMVC.Controllers
 {
@@ -37,6 +35,11 @@ namespace WebServerMVC.Controllers
                         return Redirect(returnUrl);
                     return RedirectToAction("Wall", "Home");
                 }
+
+                if(user == null)
+                {
+                    return RedirectToAction("Register");
+                }
             }
 
             return RedirectToAction("LogOn");
@@ -48,23 +51,43 @@ namespace WebServerMVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult Register(string username, string password, string returnUrl)
+        public ActionResult Register(ViewUser user, string returnUrl)
         {
-            if (username != null && password != null)
+            User modelUser = new User(user.Username, user.Password, user.Name);
+
+            if (modelUser.Username != null && modelUser.Password != null)
             {
                 UserMapper mapper = UserMapper.Singleton;
-                var user = mapper.Get(username);
+                mapper.Add(modelUser);
 
-                if (user != null && user.Password.Equals(password))
-                {
-                    AuthModule.AuthModule.CreateCookie(System.Web.HttpContext.Current.Response, username);
-                    if (Url.IsLocalUrl(returnUrl))
-                        return Redirect(returnUrl);
-                    return RedirectToAction("Wall", "Home");
-                }
+                return LogOn(modelUser.Username, modelUser.Password, returnUrl);
             }
 
             return RedirectToAction("LogOn");
+        }
+
+        [HttpPost]
+        public ActionResult Unregister()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                UserMapper mapper = UserMapper.Singleton;
+                mapper.Remove(mapper.Get(User.Identity.Name));
+
+                AuthModule.AuthModule.DeleteCookie(System.Web.HttpContext.Current.Response);
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult LogOut()
+        {
+            if(User.Identity.IsAuthenticated)
+            {
+                AuthModule.AuthModule.DeleteCookie(System.Web.HttpContext.Current.Response);
+            }
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

@@ -3,17 +3,16 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<div id="content">
+    <div id="user-login">
+        @if (!User.Identity.IsAuthenticated)
+        {    
+            @Html.Partial("UserLogOnForm", Tuple.Create("LogOn", "Sign In"))
+        }
 
-<div id="container" class="subpage">
-	<div id="content">
-        <div id="user-login">
-            <form method="post" action="@Url.Action("LogOn", "Account")">
-                <span id="user-name"> User Name: </span> <input name="user" type="text" />
-                <span id="password"> Password: </span> <input name="password" type="password" />
-                <input type="hidden" name="returnUrl" value="@Url.Action("Wall", "Home")"/>
-                <input type="submit" value="Sign in" />                
-            </form>
-        </div>				
-	</div>
+        @for (int x = 0; x < 100; ++x)
+        {
+            <p>Bigger page!</p>
+        }
+    </div>				
 </div>

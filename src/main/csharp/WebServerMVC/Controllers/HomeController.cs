@@ -18,6 +18,8 @@ namespace WebServerMVC.Controllers
             UserMapper userMapper = UserMapper.Singleton;
             ShareMapper shareMapper = ShareMapper.Singleton;
 
+            if (user == null && User.Identity.IsAuthenticated)
+                return RedirectToAction("Wall", new {user = User.Identity.Name});
             User userO = userMapper.Get(user);
             IEnumerable<Share> allShares = shareMapper.GetAll(userO).OrderByDescending(share => share.Stamp);
             

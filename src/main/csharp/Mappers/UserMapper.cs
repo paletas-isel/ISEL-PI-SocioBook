@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -32,6 +33,8 @@ namespace Mappers
         {
             lock (_singletonInstance)
             {
+                if (_allUsers.Select(p => p.Username).Contains(share.Username))
+                    throw new InvalidOperationException("User already exists!");
                 _allUsers.AddFirst(share);
             }
         }
@@ -51,7 +54,7 @@ namespace Mappers
 
         public User Get(string name)
         {
-            User user = _allUsers.Where(p => p.Name.Equals(name)).SingleOrDefault();
+            User user = _allUsers.Where(p => p.Username.Equals(name)).SingleOrDefault();
             
             return user;
         }
