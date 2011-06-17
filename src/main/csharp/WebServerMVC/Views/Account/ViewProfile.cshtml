@@ -1,0 +1,33 @@
+﻿@model Model.User
+
+@{
+    ViewBag.Title = "ViewProfile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ViewProfile</h2>
+
+<fieldset>
+    <legend>ViewUser</legend>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">Username</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Username)
+    </div>
+
+    <div class="display-label">Password</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Password)
+    </div>
+</fieldset>
+<p>
+    @if (Model.Username.Equals(User.Identity.Name))
+    {
+        @Html.ActionLink("Edit", "Edit", new { /* id=Model.PrimaryKey */ })   
+    }
+</p>

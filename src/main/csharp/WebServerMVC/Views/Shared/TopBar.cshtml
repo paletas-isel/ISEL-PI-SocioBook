@@ -22,6 +22,7 @@
                     <div id="main">Hello, @User.Identity.Name.</div>
 	                <a id="select">More Options</a>        
                     <div id="select-options">
+                        <a href="@Url.Action("ViewProfile","Account")">Profile</a>
                         @using(Html.BeginForm("Unregister", "Account", FormMethod.Post))
                         {
                             <input type="submit" value="Delete Account" /> 
