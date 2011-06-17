@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using Mappers;
 using Model;
 using WebServerMVC.Models;
@@ -9,6 +10,33 @@ namespace WebServerMVC.Controllers
     {
         //
         // GET: /Account/
+
+        public ActionResult EditProfile()
+        {
+            User user = UserMapper.Singleton.Get(User.Identity.Name);
+            return View("EditProfile", user);
+        }
+
+        //[HttpPost]
+        //public ActionResult EditProfile(User user)
+        //{
+            
+        //}
+
+        public ActionResult ViewProfile(String userName)
+        {
+            User user;
+            var mapper = UserMapper.Singleton;
+            if (userName != null)
+            {
+                user = mapper.Get(userName);
+            }
+            else
+            {
+                user = mapper.Get(User.Identity.Name);
+            }
+            return View("ViewProfile",user);
+        }
 
         public ActionResult Index()
         {
