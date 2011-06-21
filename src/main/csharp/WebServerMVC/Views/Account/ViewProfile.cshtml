@@ -20,10 +20,6 @@
         @Html.DisplayFor(model => model.Username)
     </div>
 
-    <div class="display-label">Password</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Password)
-    </div>
 </fieldset>
 <p>
     @if (Model.Username.Equals(User.Identity.Name))
