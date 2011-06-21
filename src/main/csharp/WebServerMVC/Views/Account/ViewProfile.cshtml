@@ -5,25 +5,22 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>ViewProfile</h2>
+<div id="content">    
+    <h2>@Model.Name's Profile</h2>
 
-<fieldset>
-    <legend>ViewUser</legend>
+        <div class="display-label">Name</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Name)
+        </div>
 
-    <div class="display-label">Name</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Name)
-    </div>
-
-    <div class="display-label">Username</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Username)
-    </div>
-
-</fieldset>
-<p>
-    @if (Model.Username.Equals(User.Identity.Name))
-    {
-        @Html.ActionLink("Edit", "Edit", new { /* id=Model.PrimaryKey */ })   
-    }
-</p>
+        <div class="display-label">Username</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Username)
+        </div>
+    <p>
+        @if (Model.Username.Equals(User.Identity.Name))
+        {
+            @Html.ActionLink("Edit", "EditProfile", new { /* id=Model.PrimaryKey */ })   
+        }
+    </p>
+</div>

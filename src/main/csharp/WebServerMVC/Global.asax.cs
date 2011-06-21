@@ -52,9 +52,9 @@ namespace WebServerMVC
                     Mode = SocketMode.Async
                 }, SocketServerFactory.Instance);
 
-            socketServer.CommandHandler += new CommandHandler<WebSocketSession, WebSocketCommandInfo>(socketServer_CommandHandler);
-            socketServer.NewSessionConnected += new SessionEventHandler<WebSocketSession>(socketServer_NewSessionConnected);
-            socketServer.SessionClosed += new SessionClosedEventHandler<WebSocketSession>(socketServer_SessionClosed);
+            //socketServer.CommandHandler += new CommandHandler<WebSocketSession, WebSocketCommandInfo>(socketServer_CommandHandler);
+            //socketServer.NewSessionConnected += new SessionEventHandler<WebSocketSession>(socketServer_NewSessionConnected);
+            //socketServer.SessionClosed += new SessionClosedEventHandler<WebSocketSession>(socketServer_SessionClosed);
 
             Application["WebSocketPort"] = socketServer.Config.Port;
 

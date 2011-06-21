@@ -17,11 +17,16 @@ namespace WebServerMVC.Controllers
             return View("EditProfile", user);
         }
 
-        //[HttpPost]
-        //public ActionResult EditProfile(User user)
-        //{
-            
-        //}
+        [HttpPost]
+        public ActionResult EditProfile(ViewUser userr)
+        {
+            User user = new User(userr.Username, userr.Password, userr.Name);
+            UserMapper mapper = UserMapper.Singleton;
+            mapper.Remove(user);
+            mapper.Add(user);
+
+            return RedirectToAction("ViewProfile");
+        }
 
         public ActionResult ViewProfile(String userName)
         {
@@ -75,7 +80,7 @@ namespace WebServerMVC.Controllers
 
         public ActionResult Register(string returnUrl)
         {
-            return View((object)returnUrl);
+            return View("CreateProfile",(object)returnUrl);
         }
 
         [HttpPost]

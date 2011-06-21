@@ -273,3 +273,8 @@ a:hover
     text-decoration : none;
     color : inherit;   
 }
+
+#select-options a
+{
+    display : block;
+}
