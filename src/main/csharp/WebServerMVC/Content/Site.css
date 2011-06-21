@@ -209,6 +209,7 @@ a:hover
 #select-options
 {
     background: -moz-linear-gradient(center top , #3300ff, #3300cc) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, center top, center top, from(#3300ff), to(#3300cc), color-stop(0.7, #fff));
     display : inline;
     padding : 5px 5px 5px 5px;
     position : absolute;

@@ -43,11 +43,16 @@ namespace AuthModule
             var cookie = context.Request.Cookies[ConfigurationManager.AppSettings["AuthCookieName"]];
             if(cookie != null && cookie["token"] != null)
             {
-                bool isValidToken = FormsAuthentication.Decrypt(cookie["token"]).Name.Equals(cookie["username"]);
+                bool isValidToken = CheckTokenValidity(cookie["username"], cookie["token"]);
 
                 if (isValidToken)
                     context.Context.User = new GenericPrincipal(new GenericIdentity(cookie["username"]), new string[0]);
             }
+        }
+
+        public static bool CheckTokenValidity(string username, string token)
+        {
+            return FormsAuthentication.Decrypt(token).Name.Equals(username);
         }
 
         public static void CreateCookie(HttpResponse response, string username)

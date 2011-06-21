@@ -4,6 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using SuperSocket.SocketBase;
+using SuperSocket.SocketBase.Config;
+using SuperSocket.SocketEngine;
+using SuperWebSocket;
 
 namespace WebServerMVC
 {
@@ -35,6 +39,26 @@ namespace WebServerMVC
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
+        }
+
+        void StartSuperWebSocketByProgramming()
+        {
+            var socketServer = new WebSocketServer();
+            socketServer.Setup(new RootConfig(),
+                new ServerConfig
+                {
+                    Ip = "Any",
+                    Port = 4500,
+                    Mode = SocketMode.Async
+                }, SocketServerFactory.Instance);
+
+            socketServer.CommandHandler += new CommandHandler<WebSocketSession, WebSocketCommandInfo>(socketServer_CommandHandler);
+            socketServer.NewSessionConnected += new SessionEventHandler<WebSocketSession>(socketServer_NewSessionConnected);
+            socketServer.SessionClosed += new SessionClosedEventHandler<WebSocketSession>(socketServer_SessionClosed);
+
+            Application["WebSocketPort"] = socketServer.Config.Port;
+
+            socketServer.Start();
         }
     }
 }

@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/ecmascript">
+    $(function () {
+        if (window.WebSocket != undefined) {
+            var socket = new WebSocket("ws://localhost:4500/chat");
+            socket.onerror = function () {
+                                $("#chat-status").append($("<p>There was an error while connecting! Server might be down..</p>"));
+                            };
+
+            socket.onopen = function () {
+                                $("#chat-status").append($("<p>Chat is available!</p>"));
+                            };
+        } else {
+            $("#chat-status").append($("<p>Chat is not supported in this browser!</p>"));
+        }
+    });
+
+</script>
+
+<h2>Chat</h2>
+
+<div id="chat-status"></div>
