@@ -71,11 +71,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ChatUser.cs" />
+    <Compile Include="Models\CommandType.cs" />
     <Compile Include="Models\ShareDecorator.cs" />
     <Compile Include="Models\ViewUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Chat.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\ui-lightness\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
     <Content Include="Content\themes\ui-lightness\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
@@ -107,6 +110,7 @@
     <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Scripts\Ours\chat.js" />
     <Content Include="Scripts\Ours\controller.js" />
     <Content Include="Scripts\Ours\jquery-1.5.2.js" />
     <Content Include="Scripts\Ours\jquery-ui-1.8.13.custom.min.js" />

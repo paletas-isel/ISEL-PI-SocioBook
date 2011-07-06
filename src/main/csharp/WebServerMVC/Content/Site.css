@@ -189,6 +189,7 @@ a:hover
 #topbar-bg
 {   
     background: -moz-linear-gradient(center top , #3366ff, #3300ff) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, center top, center top, from(#3300ff), to(#3300cc), color-stop(0.7, #fff));
     height: 100%;
     left: 0;
     position: absolute;

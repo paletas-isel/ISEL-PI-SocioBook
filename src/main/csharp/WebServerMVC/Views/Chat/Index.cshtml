@@ -3,24 +3,31 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<script type="text/ecmascript">
-    $(function () {
-        if (window.WebSocket != undefined) {
-            var socket = new WebSocket("ws://localhost:4500/chat");
-            socket.onerror = function () {
-                                $("#chat-status").append($("<p>There was an error while connecting! Server might be down..</p>"));
-                            };
+@section includes {
+    <link href="@Url.Content("~/Content/Chat.css")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="@Url.Content("~/Scripts/Ours/chat.js")">
+    </script>
+}
+  
+<div id="content">
+    <div id="chat">
+        <div id="chat-info">
+            <div id="chat-status">
+                <p>Server Status</p>
+                <canvas id="chat-status-icon" width="10" height="10"></canvas>
+            </div>
+    
+            <div id="chat-users">
+                <p>Online Users</p>
+                <div id="chat-users-list"></div>
+            </div>        
+        </div>
+        
+        <div id="chat-messages"></div>
 
-            socket.onopen = function () {
-                                $("#chat-status").append($("<p>Chat is available!</p>"));
-                            };
-        } else {
-            $("#chat-status").append($("<p>Chat is not supported in this browser!</p>"));
-        }
-    });
-
-</script>
-
-<h2>Chat</h2>
-
-<div id="chat-status"></div>
+        <div id="chat-message-composer">
+            <input type="text" id="chat-message-text" />
+            <input type="submit" id="chat-message-sender" value="Send" />
+        </div>    
+    </div>
+</div>

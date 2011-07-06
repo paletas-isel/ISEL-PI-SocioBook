@@ -1,0 +1,55 @@
+﻿#chat-info
+{
+    float : right;
+    margin-right : 30px;
+    border-left : 1px solid black;
+    padding-left : 5px;
+    height : 100%;
+}
+
+#chat-info canvas, #chat-info p
+{
+    display : inline;
+    font-weight : bold;
+}
+
+#chat-status
+{
+    border-bottom : 1px solid black;
+    margin-bottom : 5px;
+    padding-bottom : 5px;
+}
+
+#chat-users
+{
+    overflow : auto;
+}
+
+#chat-messages
+{
+    height : 94%;
+    padding-left : 10px;
+}
+
+#chat
+{
+    -background-color : Red;
+    height : 500px;
+    max-height : 500px;
+}
+
+#chat-message-text
+{
+    width : 90%;
+}
+
+#chat-message-composer
+{
+    padding-left : 10px;
+    max-width : 80%;
+}
+
+.chat-message-username
+{
+    font-weight : bold;
+}
