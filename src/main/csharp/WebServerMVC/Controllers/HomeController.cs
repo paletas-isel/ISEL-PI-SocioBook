@@ -21,6 +21,10 @@ namespace WebServerMVC.Controllers
             if (user == null && User.Identity.IsAuthenticated)
                 return RedirectToAction("Wall", new {user = User.Identity.Name});
             User userO = userMapper.Get(user);
+
+            if (userO == null)
+                return RedirectToAction("LogOut", "Account");
+
             IEnumerable<Share> allShares = shareMapper.GetAll(userO).OrderByDescending(share => share.Stamp);
             
             return View(allShares);

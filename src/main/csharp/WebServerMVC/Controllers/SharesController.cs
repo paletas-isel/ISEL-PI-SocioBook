@@ -47,7 +47,8 @@ namespace WebServerMVC.Controllers
             UserMapper mapperUser = UserMapper.Singleton;
 
             User userO = mapperUser.Get(user);
-            mapper.Remove(userO, mapper.Get(userO, stamp));
+            if(userO != null)
+                mapper.Remove(userO, mapper.Get(userO, stamp));
         }
 
         public ActionResult Get(string user, long? newestStamp, long? oldestStamp)
@@ -59,6 +60,10 @@ namespace WebServerMVC.Controllers
             UserMapper mapperUser = UserMapper.Singleton;
 
             User userO = mapperUser.Get(user);
+
+            if (userO == null)
+                return RedirectToAction("LogOut", "Account");
+
             List<Share> allShares;
             if (!newestStamp.HasValue)
             {

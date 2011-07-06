@@ -40,6 +40,9 @@ namespace WebServerMVC.Controllers
             {
                 user = mapper.Get(User.Identity.Name);
             }
+
+            if (user == null)
+                return RedirectToAction("LogOut", "Account");
             return View("ViewProfile",user);
         }
 

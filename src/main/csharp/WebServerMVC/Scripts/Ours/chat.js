@@ -1,7 +1,7 @@
 ﻿function ChatView() {
     var view = this;
 
-    this.SetStatusOnline = function(isonline) {
+    this.SetStatusOnline = function (isonline) {
         var canvas = $("#chat-status-icon");
         var context = canvas.get()[0].getContext('2d');
         canvas.empty();
@@ -15,6 +15,8 @@
             canvas.append("Offline");
             context.strokeStyle = '#FF0000';
             context.fillStyle = '#FF0000';
+
+            EmptyUserList();
         }
 
         context.arc(5, 5, 5, 0, Math.PI * 2, true);
@@ -49,6 +51,9 @@
     }
 
     this.SendMessage;
+    function EmptyUserList() {
+        $("#chat-users-list").empty();
+    }
 
     this.ShowUnavailable = function (message) {
         $("#chat-status").append($("<p>"+message+"</p>"));
@@ -57,27 +62,51 @@
     $(function () {
         view.SetStatusOnline(false);
 
-
         $("#chat-message-sender").click(function () {
             var message = $("#chat-message-text").val();
-            $("#chat-message-text").attr("value", "");
-            view.SendMessage(message);
+
+            if (message != "") {
+                $("#chat-message-text").attr("value", "");
+                view.SendMessage(message);
+            }
         });
     });
 }
 
 function ChatModel() {
     var model = this;
+    var status;
 
     if (window.WebSocket != undefined) {
-        var socket = new WebSocket("ws://localhost:4500/chat");
+        var socket;
+        ConnectSocket();
+        setInterval(function () {
+            if (!status) {
+                ConnectSocket();
+            }
+        }, 5000);
+
+        this.SendMessage = function (message) {
+            if(socket != undefined)
+                socket.send(message);
+        };
+    } else {
+        model.NoSupport("Chat is not supported in this browser!");
+    }
+
+    function ConnectSocket() {
+        socket = new WebSocket("ws://localhost:4500/chat");
 
         socket.onerror = function () {
             model.NoSupport("There was an error while connecting! Server might be down..");
         };
 
         socket.onopen = function () {
-            model.StatusChanged(true);
+            model.StatusChanged(status = true);
+        };
+
+        socket.onclose = function () {
+            model.StatusChanged(status = false);
         };
 
         socket.onmessage = function (event) {
@@ -95,17 +124,10 @@ function ChatModel() {
             else if (message.charAt(0) == 'R') {
                 model.ReceivedUserLeft(message.substr(1));
             }
-        }; 
-        
-        this.SendMessage = function(message) {
-            socket.send(message);
         };
-    } else {
-        model.NoSupport("Chat is not supported in this browser!");
     }
 
     this.NoSupport;
-
     this.ReceivedUserList;
     this.ReceivedUserJoin;
     this.ReceivedUserLeft;
@@ -140,7 +162,7 @@ function ChatController(view, model) {
     };
 
     model.StatusChanged = function(online) {
-        view.SetStatusOnline(online);
+        view.SetStatusOnline(online);        
     };
 }
 

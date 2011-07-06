@@ -29,6 +29,7 @@
 {
     height : 94%;
     padding-left : 10px;
+    overflow : auto;
 }
 
 #chat
