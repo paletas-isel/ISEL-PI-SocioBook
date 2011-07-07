@@ -11,6 +11,12 @@ namespace WebServerMVC.Controllers
         //
         // GET: /Account/
 
+        public ActionResult ViewFriends()
+        {
+            User user = UserMapper.Singleton.Get(User.Identity.Name);
+            return View("Friends",user);
+        }
+
         public ActionResult EditProfile()
         {
             User user = UserMapper.Singleton.Get(User.Identity.Name);

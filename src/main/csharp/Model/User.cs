@@ -6,7 +6,8 @@ namespace Model
     public class User
     {
         public List<Share> Shares { get; private set; }
-
+        public List<User> Friends{ get; private set; }
+            
         [Required]
         public string Name { get; set; }
 
@@ -24,6 +25,7 @@ namespace Model
             Password = password;
             Name = name;
             Shares = new List<Share>();
+            Friends = new List<User>();
         }
 
         public override bool Equals(object other)
