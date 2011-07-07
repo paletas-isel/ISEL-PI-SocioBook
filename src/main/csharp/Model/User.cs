@@ -36,5 +36,10 @@ namespace Model
 
             return false;
         }
+
+        public override int GetHashCode()
+        {
+            return Username.GetHashCode();
+        }
     }
 }
