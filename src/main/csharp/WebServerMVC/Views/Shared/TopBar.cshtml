@@ -23,6 +23,7 @@
 	                <a id="select">More Options</a>        
                     <div id="select-options">
                         <a href="@Url.Action("ViewProfile","Account")">Profile</a>
+                        <a href="@Url.Action("ViewFriends","Account")">Friends</a>
                         <a href="@Url.Action("Index", "Chat")">Chat</a>
                         @using(Html.BeginForm("Unregister", "Account", FormMethod.Post))
                         {
