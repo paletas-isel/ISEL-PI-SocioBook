@@ -6,5 +6,6 @@ namespace WebServerMVC.Models
         public const string USERLEFT = "R";
         public const string MESSAGE = "M";
         public const string USERLIST = "L";
+        public const string PRIVATEMESSAGE = "P";
     }
 }

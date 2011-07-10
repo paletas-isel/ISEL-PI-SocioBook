@@ -9,7 +9,7 @@
     @Html.Label("password", "Password")
     @Html.Password("password", null, new { id = "password" })
 
-    @Html.Hidden("returnUrl", Model)
+    @Html.Hidden("returnUrl", Model.Item2)
 
-    <input type="submit" value="@Model.Item2" /> 
+    <input type="submit" value="Sign In" /> 
 }

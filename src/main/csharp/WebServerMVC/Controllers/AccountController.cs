@@ -35,15 +35,23 @@ namespace WebServerMVC.Controllers
             if (userName != null)
             {
                 user = mapper.Get(userName);
+
+                if(user == null)
+                {
+                    ViewBag.Error = "Profile not found!";
+                    return View();
+                }
+
+                return View(user);
             }
             else
             {
                 user = mapper.Get(User.Identity.Name);
-            }
 
-            if (user == null)
-                return RedirectToAction("LogOut", "Account");
-            return View("ViewProfile",user);
+                if (user == null)
+                    return RedirectToAction("LogOut", "Account");
+                return View(user);
+            }
         }
 
         public ActionResult Index()
@@ -74,16 +82,17 @@ namespace WebServerMVC.Controllers
 
                 if(user == null)
                 {
-                    return RedirectToAction("Register");
+                    return RedirectToAction("Register", new { returnUrl });
                 }
             }
 
-            return RedirectToAction("LogOn");
+            return RedirectToAction("LogOn", new { returnUrl });
         }
 
         public ActionResult Register(string returnUrl)
         {
-            return View("CreateProfile",(object)returnUrl);
+            ViewBag.ReturnUrl = returnUrl;
+            return View("CreateProfile");
         }
 
         [HttpPost]
@@ -94,6 +103,12 @@ namespace WebServerMVC.Controllers
             if (modelUser.Username != null && modelUser.Password != null)
             {
                 UserMapper mapper = UserMapper.Singleton;
+                if(mapper.Get(user.Username) != null)
+                {
+                    ViewBag.Error = "User already exists!";
+                    return View("CreateProfile", (object)returnUrl);
+                }
+
                 mapper.Add(modelUser);
 
                 return LogOn(modelUser.Username, modelUser.Password, returnUrl);

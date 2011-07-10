@@ -53,6 +53,20 @@ namespace WebServerMVC.ChatServer
 
             lock (_sessions)
             {
+                if(commandinfo.Data.StartsWith("@"))
+                {
+                    int spaceix;
+                    var userTo = commandinfo.Data.Substring(1,
+                                                             spaceix = commandinfo.Data.IndexOf(' ', 1) - 1);
+
+                    ChatUser user;
+                    if ((user = _sessions.FirstOrDefault(u => u.Username.Equals(userTo))) != null)
+                    {
+                        Notify(CommandType.PRIVATEMESSAGE, string.Format("{0}:{1}", username, commandinfo.Data.Substring(spaceix + 1)), user);
+                        return;
+                    }
+                }
+
                 Notify(CommandType.MESSAGE, string.Format("{0}:{1}", username, commandinfo.Data), _sessions.Where(p => !p.Session.Equals(session)).ToArray());
             }
         }
@@ -87,6 +101,12 @@ namespace WebServerMVC.ChatServer
             {
                 lock (_sessions)
                 {
+                    if (_sessions.FirstOrDefault(u => u.Username.Equals(username)) != null)
+                    {
+                        session.Close();
+                        return;
+                    }
+
                     Notify(CommandType.USERJOIN, username, _sessions.ToArray());
 
                     var chatuser = new ChatUser(username, session);

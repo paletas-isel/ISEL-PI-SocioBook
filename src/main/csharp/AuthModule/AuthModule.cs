@@ -29,8 +29,8 @@ namespace AuthModule
             if(context.Response.StatusCode == 401)
             {
                 string url = ConfigurationManager.AppSettings["LogOnPage"];
-                
-                context.Response.Redirect(url);
+
+                context.Response.Redirect(String.Format("{0}?returnUrl={1}", url, context.Request.Url.PathAndQuery));
             }
         }
 

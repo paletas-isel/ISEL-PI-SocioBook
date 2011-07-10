@@ -7,7 +7,7 @@
     <div id="user-login">
         @if (!User.Identity.IsAuthenticated)
         {    
-            @Html.Partial("UserLogOnForm", Tuple.Create("LogOn", "Sign In"))
+            @Html.Partial("UserLogOnForm", Tuple.Create("LogOn", (string) null))
         }
         else
         {

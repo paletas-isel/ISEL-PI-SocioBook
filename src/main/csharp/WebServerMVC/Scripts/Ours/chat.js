@@ -25,7 +25,15 @@
 
     this.AddUser = function(username) {
         var userlist = $("#chat-users-list");
-        userlist.append($("<div id=" + username + ">" + username + "</div>"));
+        var div = $("<div id=" + username + ">" + username + "</div>");
+        userlist.append(div);
+        div.click(function() {
+            var chatmess = $("#chat-message-text");
+            if(chatmess.val() == "")
+                $("#chat-message-text").attr("value", '@'+username+' ');
+            else
+                $("#chat-message-text").attr("value", '@'+username+' '+chatmess.val());
+        });        
     }
 
     this.RemoveUser = function(username) {
@@ -39,15 +47,21 @@
         }
     };
 
-    this.ProcessMessage = function(message) {
+    this.ProcessMessage = function (message, klass) {
+        if (klass == undefined)
+            klass = "chat-message";
         var messages = $("#chat-messages");
         var splitMessage = message.split(':', 2);
         if (splitMessage.length == 2) {
             var user = splitMessage[0];
             var m = splitMessage[1];
 
-            messages.append($("<div class='char-message'><span class='chat-message-username'>" + user + "</span> said <span class='char-message-m'>" + m + "</span>.</div>"));
+            messages.append($("<div class='" + klass + "'><span class='chat-message-username'>" + user + "</span> said <span class='char-message-m'>" + m + "</span>.</div>"));
         }
+    }
+
+    this.ProcessPrivateMessage = function (message) {
+        this.ProcessMessage(message, "chat-private-message");    
     }
 
     this.SendMessage;
@@ -110,19 +124,23 @@ function ChatModel() {
         };
 
         socket.onmessage = function (event) {
-            var message = event.data;
+            var message = event.data.substr(1);
+            var message_type = event.data.charAt(0);
 
-            if (message.charAt(0) == 'L') {
-                model.ReceivedUserList(message.substr(1));
+            if (message_type == 'L') {
+                model.ReceivedUserList(message);
             }
-            else if (message.charAt(0) == 'M') {
-                model.ReceivedMessage(message.substr(1));
+            else if (message_type == 'M') {
+                model.ReceivedMessage(message);
             }
-            else if (message.charAt(0) == 'U') {
-                model.ReceivedUserJoin(message.substr(1));
+            else if (message_type == 'U') {
+                model.ReceivedUserJoin(message);
             }
-            else if (message.charAt(0) == 'R') {
-                model.ReceivedUserLeft(message.substr(1));
+            else if (message_type == 'R') {
+                model.ReceivedUserLeft(message);
+            }
+            else if (message_type == 'P') {
+                model.ReceivedPrivateMessage(message);
             }
         };
     }
@@ -132,13 +150,20 @@ function ChatModel() {
     this.ReceivedUserJoin;
     this.ReceivedUserLeft;
     this.ReceivedMessage;
+    this.ReceivedPrivateMessage;
     this.StatusChanged;
 }
 
 function ChatController(view, model) {
     view.SendMessage = function (message) {
         model.SendMessage(message);
-        view.ProcessMessage("You:"+message);
+
+        var ix = message.indexOf('@');
+        if(ix != -1) {
+            message = message.substr(message.indexOf(' '));
+        }
+
+        view.ProcessMessage("You:" + message);
     };
 
     model.NoSupport = function (message) {
@@ -162,8 +187,12 @@ function ChatController(view, model) {
     };
 
     model.StatusChanged = function(online) {
-        view.SetStatusOnline(online);        
+        view.SetStatusOnline(online);
     };
+
+    model.ReceivedPrivateMessage = function (message) {
+        view.ProcessPrivateMessage(message);
+    }
 }
 
 new ChatController(new ChatView(), new ChatModel());

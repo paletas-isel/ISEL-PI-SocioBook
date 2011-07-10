@@ -5,8 +5,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div id="content">    
-    <h2>@Model.Name's Profile</h2>
+<div id="content">
+    @if (Model == null) {
+        <h2 class="error">@ViewBag.Error</h2> 
+    }   
+    else
+    {
+        <h2>@Model.Name's Profile</h2>
 
         <div class="display-label">Name</div>
         <div class="display-field">
@@ -17,10 +22,11 @@
         <div class="display-field">
             @Html.DisplayFor(model => model.Username)
         </div>
-    <p>
-        @if (Model.Username.Equals(User.Identity.Name))
-        {
-            @Html.ActionLink("Edit", "EditProfile", new { /* id=Model.PrimaryKey */ })   
-        }
-    </p>
+        <p>
+            @if (Model.Username.Equals(User.Identity.Name))
+            {
+                @Html.ActionLink("Edit", "EditProfile", new { /* id=Model.PrimaryKey */ })   
+            }
+        </p>
+    }
 </div>

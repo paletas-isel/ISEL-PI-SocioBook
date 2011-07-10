@@ -54,3 +54,13 @@
 {
     font-weight : bold;
 }
+
+.chat-private-message
+{
+    color : Red;
+}
+
+#chat-users-list > div
+{
+    cursor : pointer;   
+}
