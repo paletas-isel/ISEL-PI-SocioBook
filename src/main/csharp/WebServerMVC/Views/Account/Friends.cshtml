@@ -6,20 +6,14 @@
 }
 
 <div id="content">    
-    <h2>@Model.Username's Friends</h2>
-
-    @{ Model.Friends.Add(new User("diogo1", "df", "diogo1"));}
-    @{ Model.Friends.Add(new User("diogo2", "df", "diogo2"));}
-    @{Model.Friends.Add(new User("diogo3", "df", "diogo3"));}
-    @{Model.Friends.Add(new User("diogo4", "df", "diogo4"));}
-    @{Model.Friends.Add(new User("diogo5", "df", "diogo5"));}
+    <h2>@Model.Name's Friends</h2>
 
     <div class="friends">
         @foreach (var user in Model.Friends)
         {
-            var name = user.Name;
-            <div id=name>
-               @Html.DisplayFor(model => model.Username)
+            <div id=@HtmlHelper.GenerateIdFromName(user.Name); class="friend">
+               @Html.ActionLink(user.Name, "ViewProfile", new {userName = user.Username})
+               <input type="button" value="Eliminar"/>
             </div>
         }
     </div>
