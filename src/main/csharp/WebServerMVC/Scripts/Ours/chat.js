@@ -65,6 +65,7 @@
     }
 
     this.SendMessage;
+	
     function EmptyUserList() {
         $("#chat-users-list").empty();
     }
