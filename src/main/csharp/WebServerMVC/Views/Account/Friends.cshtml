@@ -6,6 +6,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section includes{
+     <link href="@Url.Content("~/Content/Friends.css")" rel="stylesheet" type="text/css" />
+}
+
 <div id="content">    
     <h2>@Model.Name's Friends</h2>
 
@@ -15,8 +19,12 @@
             <div id=@HtmlHelper.GenerateIdFromName(user.Name); class="friend">
                    @using (Html.BeginForm("RemoveFriend", "Account", new { userName = user.Username }))
                    {
-                       @Html.ActionLink(user.Name, "ViewProfile", new {userName = user.Username})
-                       <input type="submit" value="Eliminar"/>
+                      <div class="friend-link">
+                            @Html.ActionLink(user.Name, "ViewProfile", new {userName = user.Username})
+                      </div>
+                      <div class="DeleteButton">
+                             <input type="submit" value="Eliminar"/>
+                      </div>
                    }
             </div>
         }

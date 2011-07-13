@@ -1,0 +1,24 @@
+﻿
+.friends {
+    margin-top: 30px;  
+}
+
+.friend 
+{
+    margin:5px;
+    height: 50px;
+}
+
+.friend-link
+{
+    font-size: 150%;
+    width: 100px;
+    float: left;
+    text-align: center;
+}
+
+.DeleteButton 
+{
+    float: right;
+    width: 100px;
+}
