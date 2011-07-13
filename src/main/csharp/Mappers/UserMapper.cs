@@ -54,7 +54,7 @@ namespace Mappers
 
         public User Get(string userName)
         {
-            User user = _allUsers.Where(p => p.Username.Equals(name)).SingleOrDefault();
+            User user = _allUsers.Where(p => p.Username.Equals(userName)).SingleOrDefault();
             
             return user;
         }

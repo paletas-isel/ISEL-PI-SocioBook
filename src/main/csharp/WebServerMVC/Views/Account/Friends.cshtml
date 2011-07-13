@@ -3,6 +3,7 @@
 
 @{
     ViewBag.Title = "Friends";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div id="content">    
@@ -12,8 +13,11 @@
         @foreach (var user in Model.Friends)
         {
             <div id=@HtmlHelper.GenerateIdFromName(user.Name); class="friend">
-               @Html.ActionLink(user.Name, "ViewProfile", new {userName = user.Username})
-               <input type="button" value="Eliminar"/>
+                   @using (Html.BeginForm("RemoveFriend", "Account", new { userName = user.Username }))
+                   {
+                       @Html.ActionLink(user.Name, "ViewProfile", new {userName = user.Username})
+                       <input type="submit" value="Eliminar"/>
+                   }
             </div>
         }
     </div>

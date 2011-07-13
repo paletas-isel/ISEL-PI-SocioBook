@@ -22,6 +22,7 @@
                     <div id="main">Hello, @User.Identity.Name.</div>
 	                <a id="select">More Options</a>        
                     <div id="select-options">
+                        <a href="@Url.Action( "Wall", "Home")">Wall</a>
                         <a href="@Url.Action("ViewProfile","Account")">Profile</a>
                         <a href="@Url.Action("ViewFriends","Account")">Friends</a>
                         <a href="@Url.Action("Index", "Chat")">Chat</a>

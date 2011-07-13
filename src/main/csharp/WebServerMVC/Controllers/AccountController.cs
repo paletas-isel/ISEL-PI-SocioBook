@@ -17,6 +17,24 @@ namespace WebServerMVC.Controllers
             return View("Friends",user);
         }
 
+        [HttpPost]
+        public ActionResult AddFriend(String userName)
+        {
+            User user = UserMapper.Singleton.Get(User.Identity.Name);
+            User friend = UserMapper.Singleton.Get(userName);
+            FriendsMapper.Singleton.Add(user, friend);
+            return RedirectToAction("ViewProfile", "Account", new {userName = userName});
+        }
+
+        [HttpPost]
+        public ActionResult RemoveFriend(String userName)
+        {
+            User user = UserMapper.Singleton.Get(User.Identity.Name);
+            User friend = UserMapper.Singleton.Get(userName);
+            FriendsMapper.Singleton.Remove(user, friend);
+            return RedirectToAction("ViewFriends");
+        }
+
         public ActionResult EditProfile()
         {
             User user = UserMapper.Singleton.Get(User.Identity.Name);

@@ -12,7 +12,13 @@
     else
     {
         <h2>@Model.Name's Profile</h2>
-
+        using (Html.BeginForm("AddFriend","Account", new { userName = Model.Username }))
+        {
+             if (!Model.Username.Equals(User.Identity.Name) && !Model.Friends.Contains(Mappers.UserMapper.Singleton.Get(User.Identity.Name)))
+             {
+                 <input type="submit" value="Adicionar como Amigo"/>
+             }
+        }
         <div class="display-label">Name</div>
         <div class="display-field">
             @Html.DisplayFor(model => model.Name)
@@ -25,7 +31,11 @@
         <p>
             @if (Model.Username.Equals(User.Identity.Name))
             {
-                @Html.ActionLink("Edit", "EditProfile", new { /* id=Model.PrimaryKey */ })   
+                @Html.ActionLink("Edit", "EditProfile")   
+            }
+            else
+            {
+                @Html.ActionLink("Wall", "Wall", "Home", new { user = Model.Username }, null)
             }
         </p>
     }
