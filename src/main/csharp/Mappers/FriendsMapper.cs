@@ -36,7 +36,6 @@ namespace Mappers
                 if (!user.Friends.Contains(friend))
                 {
                     user.Friends.Add(friend);
-                    friend.Friends.Add(user);
                     return true;
                 }
             }
@@ -53,7 +52,6 @@ namespace Mappers
                 if (user.Friends.Contains(friend))
                 {
                     user.Friends.Remove(friend);
-                    friend.Friends.Remove(user);
                     return true;
                 }
             }
