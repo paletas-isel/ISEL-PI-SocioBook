@@ -9,7 +9,7 @@ namespace Mappers
     public class UserMapper
     {
         private readonly LinkedList<User> _allUsers = new LinkedList<User>();
-        
+
         private UserMapper()
         {
 
@@ -41,7 +41,7 @@ namespace Mappers
 
         public void Remove(User share)
         {
-            lock(_singletonInstance)
+            lock (_singletonInstance)
             {
                 _allUsers.Remove(share);
             }
@@ -55,8 +55,13 @@ namespace Mappers
         public User Get(string userName)
         {
             User user = _allUsers.Where(p => p.Username.Equals(userName)).SingleOrDefault();
-            
+
             return user;
         }
-    } 
+
+        public bool Exists(User user)
+        {
+            return (_allUsers.Select(p => p.Username).Contains(user.Username));
+        }
+    }
 }

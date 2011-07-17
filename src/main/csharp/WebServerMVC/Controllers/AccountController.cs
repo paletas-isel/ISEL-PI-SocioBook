@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Web.Mvc;
+using Facebook.Web;
 using Mappers;
 using Model;
 using WebServerMVC.Models;
+using Facebook;
 
 namespace WebServerMVC.Controllers
 {
@@ -14,7 +16,7 @@ namespace WebServerMVC.Controllers
         public ActionResult ViewFriends()
         {
             User user = UserMapper.Singleton.Get(User.Identity.Name);
-            return View("Friends",user);
+            return View("Friends", user);
         }
 
         [HttpPost]
@@ -23,7 +25,7 @@ namespace WebServerMVC.Controllers
             User user = UserMapper.Singleton.Get(User.Identity.Name);
             User friend = UserMapper.Singleton.Get(userName);
             FriendsMapper.Singleton.Add(user, friend);
-            return RedirectToAction("ViewProfile", "Account", new {userName = userName});
+            return RedirectToAction("ViewProfile", "Account", new { userName = userName });
         }
 
         [HttpPost]
@@ -60,7 +62,7 @@ namespace WebServerMVC.Controllers
             {
                 user = mapper.Get(userName);
 
-                if(user == null)
+                if (user == null)
                 {
                     ViewBag.Error = "Profile not found!";
                     return View();
@@ -91,20 +93,20 @@ namespace WebServerMVC.Controllers
         [HttpPost]
         public ActionResult LogOn(string username, string password, string returnUrl)
         {
-            if(username != null && password != null)
+            if (username != null && password != null)
             {
                 UserMapper mapper = UserMapper.Singleton;
                 var user = mapper.Get(username);
 
-                if(user != null && user.Password.Equals(password))
+                if (user != null && user.Password.Equals(password))
                 {
                     AuthModule.AuthModule.CreateCookie(System.Web.HttpContext.Current.Response, username);
-                    if(Url.IsLocalUrl(returnUrl))
+                    if (Url.IsLocalUrl(returnUrl))
                         return Redirect(returnUrl);
                     return RedirectToAction("Wall", "Home");
                 }
 
-                if(user == null)
+                if (user == null)
                 {
                     return RedirectToAction("Register", new { returnUrl });
                 }
@@ -127,7 +129,7 @@ namespace WebServerMVC.Controllers
             if (modelUser.Username != null && modelUser.Password != null)
             {
                 UserMapper mapper = UserMapper.Singleton;
-                if(mapper.Get(user.Username) != null)
+                if (mapper.Get(user.Username) != null)
                 {
                     ViewBag.Error = "User already exists!";
                     return View("CreateProfile", (object)returnUrl);
@@ -157,12 +159,96 @@ namespace WebServerMVC.Controllers
 
         public ActionResult LogOut()
         {
-            if(User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated)
             {
                 AuthModule.AuthModule.DeleteCookie(System.Web.HttpContext.Current.Response);
             }
 
             return RedirectToAction("Index", "Home");
         }
+
+        // FACEBOOK AUTHENTICATION
+
+        // Can't find a way better to do this redirects : X
+
+        private const string logoffUrl = "/Home/Index";
+        private const string redirectUrl = "/Account/OAuthFacebook";
+
+        //
+        // GET: /Account/LogOnFacebook/
+
+        public ActionResult LogOnFacebook(string returnUrl)
+        {
+            FacebookOAuthClient oAuthClient = new FacebookOAuthClient(FacebookApplication.Current);
+            oAuthClient.RedirectUri = new Uri(Request.Url.GetLeftPart(UriPartial.Authority) + redirectUrl);
+            var loginUri = oAuthClient.GetLoginUrl();
+
+            return Redirect(loginUri.AbsoluteUri);
+        }
+
+        //
+        // GET: /Account/OAuthFacebook/
+
+        public ActionResult OAuthFacebook(string code, string state)
+        {
+            FacebookOAuthResult oauth;
+
+            // Need to use TryParse method because FacebookOAuthResult cannot be instantiated .
+            // Ugly code that doesn't use MVC features but it is _really_ necessary ! Without that
+            // I can't check if the FacebookOAuthResult is done with success.
+
+            if (FacebookOAuthResult.TryParse(Request.Url, out oauth))
+            {
+                if (oauth.IsSuccess)
+                {
+                    var oauthClient = new FacebookOAuthClient(FacebookApplication.Current);
+                    oauthClient.RedirectUri = new Uri(Request.Url.GetLeftPart(UriPartial.Authority) + redirectUrl);
+
+                    dynamic resultToken = oauthClient.ExchangeCodeForAccessToken(code);
+
+                    string accessToken = resultToken.access_token;
+
+                    // Gather all Facebook information
+
+                    FacebookClient fbClient = new FacebookClient(accessToken);
+                    dynamic me = fbClient.Get("me");
+
+                    long id = Convert.ToInt64(me.id);
+                    string name = me.name;
+
+                    User user = new User(id, accessToken, name);
+
+                    if (! UserMapper.Singleton.Exists(user))
+                        UserMapper.Singleton.Add(user);
+
+                    // FacebookWebContext.Current.SignedRequest.Expires
+                    AuthModule.AuthModule.CreateCookie(System.Web.HttpContext.Current.Response, user.Username);
+
+                    // Prevents open redirection attack ! Yeah !
+
+                    if (Url.IsLocalUrl(oauthClient.RedirectUri.ToString()))
+                    {
+                        return RedirectToAction("Wall", "Home");
+                    }
+
+                    return RedirectToAction("Index", "Home");
+
+                }
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        //
+        // GET: /Account/LogOffFacebook/
+
+        public ActionResult LogOffFacebook()
+        {
+            FacebookOAuthClient oauth = new FacebookOAuthClient();
+            oauth.RedirectUri = new Uri(Request.Url.GetLeftPart(UriPartial.Authority) + logoffUrl);
+            var logoutUrl = oauth.GetLogoutUrl();
+
+            return Redirect(logoutUrl.AbsoluteUri);
+        }
+
     }
 }

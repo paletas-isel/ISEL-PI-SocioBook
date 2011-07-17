@@ -11,6 +11,7 @@
 
                 @if (!isAuth)
                 {
+                    <a id="facebook" href="@Url.Action("LogOnFacebook", "Account")"><img src="http://2for1.ae/wp-content/themes/2for1/images/facebook-login-button.png" alt="Facebook Log On" /></a>
 	                <a id="main" href="@Url.Action("LogOn", "Account")">Log On</a>
 	                <a id="select">More Options</a>        
                     <div id="select-options">

@@ -6,8 +6,8 @@ namespace Model
     public class User
     {
         public List<Share> Shares { get; private set; }
-        public List<User> Friends{ get; private set; }
-            
+        public List<User> Friends { get; private set; }
+
         [Required]
         public string Name { get; set; }
 
@@ -19,6 +19,10 @@ namespace Model
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
+        public long IdFacebook { get; set; }
+
+        public string TokenFacebook { get; set; }
+
         public User(string username, string password, string name)
         {
             Username = username;
@@ -28,9 +32,19 @@ namespace Model
             Friends = new List<User>();
         }
 
+        public User(long id, string token, string name)
+        {
+            IdFacebook = id;
+            Username = id.ToString();
+            Name = name;
+            TokenFacebook = token;
+            Shares = new List<Share>();
+            Friends = new List<User>();
+        }
+
         public override bool Equals(object other)
         {
-            if(other is User)
+            if (other is User)
             {
                 User otherUser = other as User;
                 return this.Username.Equals(otherUser.Username);

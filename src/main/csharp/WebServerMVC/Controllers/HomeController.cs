@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Linq;
+using Facebook.Web;
+using Facebook.Web.Mvc;
 using Mappers;
 using Model;
 
@@ -18,7 +20,7 @@ namespace WebServerMVC.Controllers
             UserMapper userMapper = UserMapper.Singleton;
             ShareMapper shareMapper = ShareMapper.Singleton;
 
-            if (user == null && User.Identity.IsAuthenticated)
+            if ((user == null && User.Identity.IsAuthenticated))
                 return RedirectToAction("Wall", new {user = User.Identity.Name});
             User userO = userMapper.Get(user);
 
